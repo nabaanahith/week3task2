@@ -99026,9 +99026,9 @@ function (_Component) {
 
   _createClass(News, [{
     key: "votesstore",
-    value: function votesstore(id) {
+    value: function votesstore(id, counterValue) {
       var docData = {
-        votes_numbers: this.state.counterValue
+        votes_numbers: counterValue
       };
 
       _firebase.default.firestore().collection("votes").doc("artical_" + id).set(docData).then(function () {// console.log("document successfully written!");
@@ -99095,7 +99095,7 @@ function (_Component) {
       });
       counterElem.innerHTML = counterValuee;
       localStorage.setItem('counter p', counterValuee);
-      this.votesstore(id);
+      this.votesstore(id, counterValuee);
     }
   }, {
     key: "downvote",
@@ -99113,7 +99113,7 @@ function (_Component) {
       }); //console.log(counterValue)
 
       localStorage.setItem('counter p', counterValue2);
-      this.votesstore(id);
+      this.votesstore(id, counterValue2);
     }
   }, {
     key: "onInputChange",
@@ -99230,7 +99230,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60161" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60584" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

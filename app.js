@@ -105,12 +105,12 @@ class News extends Component{
     this.getNews()
 
   }
-  votesstore(id){
+  votesstore(id,counterValue){
 
 
     
     var docData = {
-votes_numbers:this.state.counterValue
+votes_numbers:counterValue
   };
   firebase.firestore().collection("votes").doc("artical_"+id).set(docData).then(function() {
      // console.log("document successfully written!");
@@ -181,7 +181,7 @@ upvote(id){
      
         localStorage.setItem('counter p',counterValuee);
         
-  this.votesstore(id)
+  this.votesstore(id,counterValuee)
 
     }
 downvote(id){
@@ -199,7 +199,7 @@ downvote(id){
   //console.log(counterValue)
   localStorage.setItem('counter p',counterValue2);
 
-  this.votesstore(id)
+  this.votesstore(id,counterValue2)
 
 }
 
