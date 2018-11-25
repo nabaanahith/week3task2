@@ -2,7 +2,17 @@
 // import necesary libs.
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
+import firebase from 'firebase';
 import styled from 'styled-components'
+var config = {
+  apiKey: "AIzaSyDiEdheYYptR8jqM1skd1JWLF_fIoqmIp8",
+  authDomain: "fikrajob-c5adb.firebaseapp.com",
+  databaseURL: "https://fikrajob-c5adb.firebaseio.com",
+  projectId: "fikrajob-c5adb",
+  storageBucket: "fikrajob-c5adb.appspot.com",
+  messagingSenderId: "638394804035"
+};
+firebase.initializeApp(config);
 
 
 let SearchBox = styled.input `
@@ -81,13 +91,30 @@ class News extends Component{
     this.state = {
       t:20,
       news: [],
-      searchValue: 'usa'
+      searchValue: 'usa',
+      counterValue:0
     }
+    firebase.firestore().collection("votes").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+          console.log(`${doc.id} => ${doc.data()}`);
+      });
+  });
     
 
 
     this.getNews()
 
+  }
+  votesstore(id){
+
+
+    
+    var docData = {
+votes_numbers:this.state.counterValue
+  };
+  firebase.firestore().collection("votes").doc("artical_"+id).set(docData).then(function() {
+     // console.log("document successfully written!");
+  });
   }
   
   sorting(e)
@@ -100,7 +127,8 @@ changee(e){
 
  // this.getNews('iraq',e.target.value)
  this.setState({
-t:e.target.value
+t:e.target.value,
+
 
 })
 }
@@ -108,10 +136,12 @@ t:e.target.value
   getNews(searchTerm = this.state.searchValue,aa) {
     fetch(`https://newsapi.org/v2/everything?q=${searchTerm}&apiKey=978d6c3818ff431b8c210ae86550fb1f`)
     .then((response)=>{
-      
+      window.res=response;
+      console.log('resp :', response)
       return response.json()
     })
     .then((data)=>{
+      console.log('data :', data)
       
       this.setState({
         
@@ -137,47 +167,43 @@ t:e.target.value
 
 
 
-upvote(){
+upvote(id){
+ //console.log("v is",v )
+ // console.log("vis",document.images[parseInt(v)].attributes.getNamedItem("data-artice-id"))
 
-        let counterElem = document.getElementById('counter');
-        let counterValue = parseInt(counterElem.textContent) + 1;
-        counterElem.innerHTML = counterValue
-        //console.log(counterValue)
-        localStorage.setItem('counter p',counterValue);
-      
+        let counterElem = document.getElementById(id);
+       // console.log("counterElem",counterElem )
+        let counterValuee = parseInt(counterElem.textContent) + 1;
+        this.setState({
+          counterValue:counterValuee
+        })
+        counterElem.innerHTML = counterValuee
+     
+        localStorage.setItem('counter p',counterValuee);
+        
+  this.votesstore(id)
+
     }
-downvote(){
+downvote(id){
 
 
-  let counterElem2 = document.getElementById('counter');
+  let counterElem2 = document.getElementById(id);
 
   let counterValue2 = parseInt(counterElem2.textContent) - 1;
   if(counterValue2<0){
     counterValue2=0;  }
   counterElem2.innerHTML = counterValue2
+  this.setState({
+    counterValue:counterValue2
+  })
   //console.log(counterValue)
   localStorage.setItem('counter p',counterValue2);
 
-
+  this.votesstore(id)
 
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
   onInputChange(event){
     this.setState({
       searchValue: event.target.value
@@ -229,7 +255,7 @@ downvote(){
         <NewsContainer>
           {
             this.state.news.slice(0, this.state.t).map((item, i)=>{
-
+              
               return (
               <NewsItem key={i}>
           
@@ -244,10 +270,15 @@ downvote(){
                 </NewsText>
                 <Div className="voter">
                 <div>
-                <img id="p" onClick={this.upvote.bind(this)} height="23px" src={require('./assets/caret-arrow-up.png')}   data-artice-id={i} alt=""/>
-                <div id="counter">1</div>
+              
+                <img id="p" onClick={this.upvote.bind(this,i)} height="23px" src={require('./assets/caret-arrow-up.png')}   data-artice-id={i} alt=""/>
+                <div id={i}>
+               
+              
+                1</div>
+              
                 
-                <img id="m"  onClick={this.downvote.bind(this)} height="23px" src={require('./assets/caret-down.png')} alt=""/>
+                <img id="m"  onClick={this.downvote.bind(this,i)} height="23px" src={require('./assets/caret-down.png')} data-artice-id={i} alt=""/>
                 </div>
                 </Div>
               </NewsItem>
