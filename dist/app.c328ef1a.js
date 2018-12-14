@@ -98898,8 +98898,28 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-function _templateObject7() {
+function _templateObject9() {
   var data = _taggedTemplateLiteral(["\ndisplay: flex;\nflex-direction: column;\njustify-content: center;\n\ntext-align: end;\n\n\n"]);
+
+  _templateObject9 = function _templateObject9() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject8() {
+  var data = _taggedTemplateLiteral(["\n  position: absolute;\n  bottom: 0px;\n  color: #399DF2;\n  font-family: sans-serif;\n"]);
+
+  _templateObject8 = function _templateObject8() {
+    return data;
+  };
+
+  return data;
+}
+
+function _templateObject7() {
+  var data = _taggedTemplateLiteral(["\n  padding-left: 14px;\n  position: relative;\n"]);
 
   _templateObject7 = function _templateObject7() {
     return data;
@@ -98909,7 +98929,7 @@ function _templateObject7() {
 }
 
 function _templateObject6() {
-  var data = _taggedTemplateLiteral(["\n  position: absolute;\n  bottom: 0px;\n  color: #399DF2;\n  font-family: sans-serif;\n"]);
+  var data = _taggedTemplateLiteral(["\n  background-color: #fff;\n  border: 2px solid #E5E9F2;\n  min-height: 150px;\n  margin: 20px 0px;\n  border-radius: 4px;\n  display: flex;\n  padding: 10px;\n"]);
 
   _templateObject6 = function _templateObject6() {
     return data;
@@ -98919,7 +98939,7 @@ function _templateObject6() {
 }
 
 function _templateObject5() {
-  var data = _taggedTemplateLiteral(["\n  padding-left: 14px;\n  position: relative;\n"]);
+  var data = _taggedTemplateLiteral(["\n  background-color: #f8f8f8;\n  padding: 20px 10%;\n\n"]);
 
   _templateObject5 = function _templateObject5() {
     return data;
@@ -98929,7 +98949,7 @@ function _templateObject5() {
 }
 
 function _templateObject4() {
-  var data = _taggedTemplateLiteral(["\n  background-color: #fff;\n  border: 2px solid #E5E9F2;\n  min-height: 150px;\n  margin: 20px 0px;\n  border-radius: 4px;\n  display: flex;\n  padding: 10px;\n"]);
+  var data = _taggedTemplateLiteral(["\n  display: flex;\n  padding: 0px 10%;\n  align-items: center;\n  justify-content: space-between;\n  box-shadow: 0px 2px 25px rgba(0,0,0,0.16);\n  height: 100px;\n"]);
 
   _templateObject4 = function _templateObject4() {
     return data;
@@ -98939,7 +98959,7 @@ function _templateObject4() {
 }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n  background-color: #f8f8f8;\n  padding: 20px 10%;\n\n"]);
+  var data = _taggedTemplateLiteral(["\nmargin-top: 6%;\n    margin-left: 3%;\n    border-radius: 20px;\n    background-color: #a9a3a3;\n    color: #fff;\n    font-size: -2.8rem;\n    border: 0px;\n    height: 22px;\n    outline: none;\n    padding: 0 3px 0 6px;\n    text-align: center;\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -98949,7 +98969,7 @@ function _templateObject3() {
 }
 
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n  display: flex;\n  padding: 0px 10%;\n  align-items: center;\n  justify-content: space-between;\n  box-shadow: 0px 2px 25px rgba(0,0,0,0.16);\n  height: 100px;\n"]);
+  var data = _taggedTemplateLiteral(["\nmargin-top: 6%;\n    margin-left: 3%;\n    border-radius: 20px;\n    background-color: #a9a3a3;\n    color: #fff;\n    font-size: -2.8rem;\n    border: 0px;\n    height: 22px;\n    outline: none;\n    padding: 0 3px 0 6px;\n    text-align: center;\n \n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -98983,17 +99003,21 @@ _firebase.default.initializeApp(config);
 
 var SearchBox = _styledComponents.default.input(_templateObject());
 
-var Navigation = _styledComponents.default.header(_templateObject2());
+var Inputtext = _styledComponents.default.input(_templateObject2());
 
-var NewsContainer = _styledComponents.default.main(_templateObject3());
+var Button = _styledComponents.default.button(_templateObject3());
 
-var NewsItem = _styledComponents.default.div(_templateObject4());
+var Navigation = _styledComponents.default.header(_templateObject4());
 
-var NewsText = _styledComponents.default.div(_templateObject5());
+var NewsContainer = _styledComponents.default.main(_templateObject5());
 
-var DateTime = _styledComponents.default.time(_templateObject6());
+var NewsItem = _styledComponents.default.div(_templateObject6());
 
-var Div = _styledComponents.default.div(_templateObject7());
+var NewsText = _styledComponents.default.div(_templateObject7());
+
+var DateTime = _styledComponents.default.time(_templateObject8());
+
+var Div = _styledComponents.default.div(_templateObject9());
 
 var News =
 /*#__PURE__*/
@@ -99010,12 +99034,13 @@ function (_Component) {
       t: 20,
       news: [],
       searchValue: 'usa',
-      counterValue: 0
+      counterValue: 0,
+      email: ''
     };
 
     _firebase.default.firestore().collection("votes").get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        console.log("".concat(doc.id, " => ").concat(doc.data()));
+        console.log("".concat(doc.id, " => ").concat(doc.toto));
       });
     });
 
@@ -99028,11 +99053,22 @@ function (_Component) {
     key: "votesstore",
     value: function votesstore(id, counterValue) {
       var docData = {
-        votes_numbers: counterValue
+        votes_numbers: counterValue,
+        emailll: this.state.email
       };
 
       _firebase.default.firestore().collection("votes").doc("artical_" + id).set(docData).then(function () {// console.log("document successfully written!");
       });
+    }
+  }, {
+    key: "subscribe",
+    value: function subscribe(emaill) {
+      console.log(this.state.email);
+      var docData = {
+        emaill: this.state.email
+      };
+
+      _firebase.default.firestore().collection("email").doc().set(docData);
     }
   }, {
     key: "sorting",
@@ -99045,6 +99081,13 @@ function (_Component) {
       // this.getNews('iraq',e.target.value)
       this.setState({
         t: e.target.value
+      });
+    }
+  }, {
+    key: "inputemail",
+    value: function inputemail(e) {
+      this.setState({
+        email: e.target.value
       });
     }
   }, {
@@ -99090,6 +99133,11 @@ function (_Component) {
       var counterElem = document.getElementById(id); // console.log("counterElem",counterElem )
 
       var counterValuee = parseInt(counterElem.textContent) + 1;
+
+      if (counterValuee > 1) {
+        counterValuee = 1;
+      }
+
       this.setState({
         counterValue: counterValuee
       });
@@ -99145,7 +99193,12 @@ function (_Component) {
         onKeyUp: this.onKeyUp.bind(this),
         value: this.state.searchValue,
         placeholder: "search term"
-      }), _react.default.createElement("select", {
+      }), _react.default.createElement(Inputtext, {
+        onChange: this.inputemail.bind(this)
+      }), _react.default.createElement("button", {
+        id: "bbt",
+        onClick: this.subscribe.bind(this)
+      }, "subscripe"), _react.default.createElement("select", {
         onChange: this.sorting.bind(this)
       }, _react.default.createElement("option", {
         value: "v3"
@@ -99183,7 +99236,7 @@ function (_Component) {
           alt: ""
         }), _react.default.createElement("div", {
           id: i
-        }, "1"), _react.default.createElement("img", {
+        }, "0"), _react.default.createElement("img", {
           id: "m",
           onClick: _this3.downvote.bind(_this3, i),
           height: "23px",
@@ -99230,7 +99283,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60584" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62707" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

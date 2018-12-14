@@ -29,6 +29,37 @@ margin-top: 6%;
     text-align: center;
  
 `
+
+let Inputtext = styled.input `
+margin-top: 6%;
+    margin-left: 3%;
+    border-radius: 20px;
+    background-color: #a9a3a3;
+    color: #fff;
+    font-size: -2.8rem;
+    border: 0px;
+    height: 22px;
+    outline: none;
+    padding: 0 3px 0 6px;
+    text-align: center;
+ 
+`
+
+
+let Button = styled.button `
+margin-top: 6%;
+    margin-left: 3%;
+    border-radius: 20px;
+    background-color: #a9a3a3;
+    color: #fff;
+    font-size: -2.8rem;
+    border: 0px;
+    height: 22px;
+    outline: none;
+    padding: 0 3px 0 6px;
+    text-align: center;
+`
+
 let Navigation = styled.header `
   display: flex;
   padding: 0px 10%;
@@ -92,11 +123,12 @@ class News extends Component{
       t:20,
       news: [],
       searchValue: 'usa',
-      counterValue:0
+      counterValue:0,
+      email:''
     }
     firebase.firestore().collection("votes").get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-          console.log(`${doc.id} => ${doc.data()}`);
+          console.log(`${doc.id} => ${doc.toto}`);
       });
   });
     
@@ -107,14 +139,28 @@ class News extends Component{
   }
   votesstore(id,counterValue){
 
-
+  
     
     var docData = {
-votes_numbers:counterValue
+votes_numbers:counterValue,
+emailll:this.state.email
   };
-  firebase.firestore().collection("votes").doc("artical_"+id).set(docData).then(function() {
+  firebase.firestore().collection("votes").doc("artical_"+id)
+  .set(docData)
+  .then(function() {
      // console.log("document successfully written!");
   });
+  }
+
+
+  subscribe(emaill){
+    console.log(this.state.email);
+    var docData = {
+      emaill:this.state.email
+        };
+        firebase.firestore().collection("email").doc()
+        .set(docData);
+
   }
   
   sorting(e)
@@ -132,6 +178,16 @@ t:e.target.value,
 
 })
 }
+
+inputemail(e){
+
+this.setState({
+  email:e.target.value
+})
+
+
+}
+
 
   getNews(searchTerm = this.state.searchValue,aa) {
     fetch(`https://newsapi.org/v2/everything?q=${searchTerm}&apiKey=978d6c3818ff431b8c210ae86550fb1f`)
@@ -174,6 +230,8 @@ upvote(id){
         let counterElem = document.getElementById(id);
        // console.log("counterElem",counterElem )
         let counterValuee = parseInt(counterElem.textContent) + 1;
+        if(counterValuee>1){
+          counterValuee=1;  }
         this.setState({
           counterValue:counterValuee
         })
@@ -192,6 +250,8 @@ downvote(id){
   let counterValue2 = parseInt(counterElem2.textContent) - 1;
   if(counterValue2<0){
     counterValue2=0;  }
+
+    
   counterElem2.innerHTML = counterValue2
   this.setState({
     counterValue:counterValue2
@@ -230,6 +290,9 @@ downvote(id){
           onChange={this.onInputChange.bind(this)} 
           onKeyUp={this.onKeyUp.bind(this)}
           value={this.state.searchValue} placeholder="search term"/>
+          <Inputtext 
+          onChange={this.inputemail.bind(this)} />
+          <button id="bbt" onClick={this.subscribe.bind(this)}>subscripe</button>
            <select onChange={this.sorting.bind(this)}>
             <option value="v3">defualt</option>
             <option value="v2">sorting by date</option>
@@ -275,7 +338,7 @@ downvote(id){
                 <div id={i}>
                
               
-                1</div>
+                0</div>
               
                 
                 <img id="m"  onClick={this.downvote.bind(this,i)} height="23px" src={require('./assets/caret-down.png')} data-artice-id={i} alt=""/>
